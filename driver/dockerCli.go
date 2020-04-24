@@ -233,11 +233,11 @@ func DockerTag(id, path string) error {
 }
 
 //镜像推送
-func DockerPush(path string) error {
+func DockerPush(path, authbase string) error {
 	var err error
 	initialCli()
 	ctx := context.Background()
-	reader, err := Cli.ImagePush(ctx, path, types.ImagePushOptions{})
+	reader, err := Cli.ImagePush(ctx, path, types.ImagePushOptions{RegistryAuth: authbase})
 	if err != nil {
 		return err
 	}
