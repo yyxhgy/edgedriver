@@ -11,7 +11,6 @@ import (
 	"github.com/docker/go-connections/nat"
 	"io"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -29,22 +28,20 @@ func initialCli() error {
 }
 
 //镜像拉取
-func DockerPull(path, authbase string) error {
+func DockerPull(path, authbase string) (string, error) {
 	var err error
 	initialCli()
 	fmt.Println("镜像地址：" + path)
 	ctx := context.Background()
 	options := types.ImagePullOptions{RegistryAuth: authbase}
-	if !strings.Contains(path, "registry.cn-shanghai.aliyuncs.com/wingoht-yiyun") {
-		options = types.ImagePullOptions{}
-	}
 	reader, err := Cli.ImagePull(ctx, path, options)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer reader.Close()
-	io.Copy(os.Stdout, reader)
-	return err
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(reader)
+	return buf.String(), err
 }
 
 //容器创建
