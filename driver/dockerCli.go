@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
+	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 	"io"
@@ -261,4 +263,18 @@ func DockerRun(path, name, restart string, binds []string, portbinds nat.PortMap
 		return container.ContainerCreateCreatedBody{}, err
 	}
 	return resp, err
+}
+
+//镜像检索
+func ImageSearch(term, autbase string) ([]registry.SearchResult, error) {
+	var err error
+	initialCli()
+	ctx := context.Background()
+	reader, err := Cli.ImageSearch(ctx, term, types.ImageSearchOptions{
+		RegistryAuth:  autbase,
+		PrivilegeFunc: nil,
+		Filters:       filters.Args{},
+		Limit:         0,
+	})
+	return reader, err
 }
