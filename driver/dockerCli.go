@@ -274,7 +274,7 @@ func ImageSearch(term, autbase string) ([]registry.SearchResult, error) {
 		RegistryAuth:  autbase,
 		PrivilegeFunc: nil,
 		Filters:       filters.Args{},
-		Limit:         0,
+		Limit:         10,
 	})
 	return reader, err
 }
