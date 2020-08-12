@@ -35,9 +35,12 @@ func DockerPull(path, authbase string) (string, error) {
 	initialCli()
 	fmt.Println("镜像地址：" + path)
 	ctx := context.Background()
-	options := types.ImagePullOptions{RegistryAuth: authbase, All: true}
+	options := types.ImagePullOptions{RegistryAuth: authbase}
+	fmt.Println(time.Now().String() + " 镜像：" + path + " 拉取中")
 	reader, err := Cli.ImagePull(ctx, path, options)
+	fmt.Println(time.Now().String() + " 镜像：" + path + " 拉取结束")
 	if err != nil {
+		fmt.Println(err.Error())
 		return "", err
 	}
 	defer reader.Close()
