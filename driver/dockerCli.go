@@ -73,7 +73,6 @@ func DockerCreate(path, name, restart string, binds []string, portbinds nat.Port
 		VolumesFrom:     nil,
 		CapAdd:          nil,
 		CapDrop:         nil,
-		Capabilities:    nil,
 		CgroupnsMode:    "",
 		DNS:             nil,
 		DNSOptions:      nil,
@@ -103,7 +102,7 @@ func DockerCreate(path, name, restart string, binds []string, portbinds nat.Port
 		MaskedPaths:     nil,
 		ReadonlyPaths:   nil,
 		Init:            nil,
-	}, &network.NetworkingConfig{}, name)
+	}, &network.NetworkingConfig{}, nil, name)
 	if err != nil {
 		return container.ContainerCreateCreatedBody{}, err
 	}
